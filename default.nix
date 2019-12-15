@@ -2,11 +2,11 @@ with import <nixpkgs> {};
 
 let
 
-  version = "4.1.0";
+  version = "4.2.1";
 
   molotov-app = fetchurl {
     url = "http://desktop-auto-upgrade.molotov.tv/linux/${version}/molotov.AppImage";
-    sha256 = "14kh7ch6r3gk7j5ylk3hch1db87f69rli23rnh6kzx89nvpjs5vl";
+    sha256 = "1567l987691xc77p2ixrgwl8a1ip5kffvm5rn37aj1pm4j1cdr2f";
     executable = true;
   };
 
