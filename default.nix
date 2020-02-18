@@ -6,7 +6,7 @@ let
 
   molotov-app = fetchurl {
     url = "http://desktop-auto-upgrade.molotov.tv/linux/${version}/molotov.AppImage";
-    sha256 = "00p8srf4yswbihlsi3s7kfkav02h902yvrq99wys11is63n01x8z";
+    sha256 = "04sb8dsk5hknkc9fqwq0r9ira2vd8z8b9skrvrlpydwm2by8gszq";
     executable = true;
   };
 
