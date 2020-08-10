@@ -1,18 +1,35 @@
 with import <nixpkgs> {};
 
 let
-
+  pname = "molotov";
   version = "4.2.2";
+  name = "${pname}-${version}";
 
-  molotov-app = fetchurl {
+  src = fetchurl {
     url = "http://desktop-auto-upgrade.molotov.tv/linux/${version}/molotov.AppImage";
-    sha256 = "04sb8dsk5hknkc9fqwq0r9ira2vd8z8b9skrvrlpydwm2by8gszq";
-    executable = true;
+    sha256 = "00p8srf4yswbihlsi3s7kfkav02h902yvrq99wys11is63n01x8z";
   };
 
-  molotov-bin = writeScriptBin "molotov" ''
-    #!${pkgs.stdenv.shell}
-    ${appimage-run}/bin/appimage-run ${molotov-app}
+  appimageContents = appimageTools.extractType2 { inherit name src; };
+in  appimageTools.wrapType2 {
+  inherit name src;
+
+  extraInstallCommands = ''
+    mv $out/bin/${name} $out/bin/${pname}
+    install -m 444 -D \
+      ${appimageContents}/${pname}.desktop \
+      $out/share/applications/${pname}.desktop
+    substituteInPlace $out/share/applications/${pname}.desktop \
+      --replace 'Exec=AppRun' 'Exec=${pname}'
+    cp -r ${appimageContents}/usr/share/icons $out/share
   '';
 
-in molotov-bin
+  meta = with stdenv.lib; {
+    description = "Molotov, TV and on-demand provider";
+    homepage = "https://www.molotov.tv";
+    license = licenses.unfree;
+    maintainers = with maintainers; [ apeyroux ];
+    platforms = [ "x86_64-linux" ];
+  };
+
+}
